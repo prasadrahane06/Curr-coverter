@@ -1,34 +1,38 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  BottomTabScreenProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+import {CompositeScreenProps} from '@react-navigation/native';
 import HomeScreen from '../screens/home/HomeScreen';
+import {RootStackParamList, RootStackScreenProps} from './RootNavigator';
 import CartScreen from '../screens/cart/CartScreen';
-import {Ionicons} from '@expo/vector-icons';
 
 export type AppTabParamList = {
   Home: undefined;
   Cart: undefined;
 };
 
-const Tab = createBottomTabNavigator<AppTabParamList>();
+const TabsStack = createBottomTabNavigator<AppTabParamList>();
+
+export type TabsStackScreenProps<T extends keyof AppTabParamList> =
+  CompositeScreenProps<
+    BottomTabScreenProps<AppTabParamList, T>,
+    RootStackScreenProps<'TabsStack'>
+  >;
 
 const AppNavigator = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({color, size}) => {
-          let iconName: keyof typeof Ionicons.glyphMap;
-
-          if (route.name === 'Home') {
-            iconName = 'home-outline';
-          } else if (route.name === 'Cart') {
-            iconName = 'cart-outline';
-          }
-
-          return <Ionicons name={'arrow-back'} size={size} color={color} />;
-        },
-      })}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Cart" component={CartScreen} />
-    </Tab.Navigator>
+    <TabsStack.Navigator
+      screenOptions={{tabBarShowLabel: false, tabBarHideOnKeyboard: true}}>
+      <TabsStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerShown: false}}></TabsStack.Screen>
+      <TabsStack.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{headerShown: false}}></TabsStack.Screen>
+    </TabsStack.Navigator>
   );
 };
 
