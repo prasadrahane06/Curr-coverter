@@ -23,9 +23,12 @@ export const rechargeItems = [
     title: GLOBAL_TEXT.categories.recharge.recharge,
     icon: require('@assets/Icons/Recharge.png'),
   },
-  {title: '', icon: require('@assets/Icons/Dth.png')},
   {
     title: GLOBAL_TEXT.categories.recharge.dth,
+    icon: require('@assets/Icons/Electricity.png'),
+  },
+  {
+    title: GLOBAL_TEXT.categories.recharge.electricity,
     icon: require('@assets/Icons/Electricity.png'),
   },
   {
@@ -44,7 +47,7 @@ export const yatraItems = [
   },
   {
     title: GLOBAL_TEXT.categories.yatra.shopping,
-    icon: require('@assets/Icons/Shopping.png'),
+    icon: require('@assets/Icons/Shooping.png'),
   },
   {
     title: GLOBAL_TEXT.categories.yatra.pooja,

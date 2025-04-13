@@ -19,7 +19,7 @@ export function AUIThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
-        {fontFamily: 'Poppins-Thin'},
+        {fontFamily: 'Montserrat-Regular'},
         style,
       ]}
       {...rest}
@@ -30,17 +30,15 @@ export function AUIThemedText({
 const styles = StyleSheet.create({
   default: {
     fontSize: 16,
-    lineHeight: 24,
+    color: '#FFFFFF',
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
+    fontSize: 10.33,
+    fontWeight: '400',
   },
   subtitle: {
     fontSize: 20,

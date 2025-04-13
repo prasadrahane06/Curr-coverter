@@ -42,8 +42,12 @@ const HeaderCard: React.FC<HeaderCardProps> = ({
           />
         </TouchableOpacity>
         <View>
-          <AUIThemedText type="default">{greetingText}</AUIThemedText>
-          <AUIThemedText type="default">{userNameText}</AUIThemedText>
+          <AUIThemedText type="default" style={{fontSize: 11}}>
+            {greetingText}
+          </AUIThemedText>
+          <AUIThemedText type="default" style={{fontSize: 14}}>
+            {userNameText}
+          </AUIThemedText>
         </View>
       </View>
       <View style={styles.ImageContainer}>

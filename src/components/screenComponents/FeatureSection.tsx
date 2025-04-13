@@ -1,3 +1,4 @@
+import {AUIThemedText} from '@components/common/AUIThemedText';
 import React from 'react';
 import {
   View,
@@ -29,7 +30,9 @@ const FeatureSection: React.FC<Props> = ({
 }) => {
   return (
     <View style={[styles.sectionContainer, containerStyle]}>
-      <Text style={styles.sectionTitle}>{sectionTitle}</Text>
+      <AUIThemedText type="defaultSemiBold" style={{marginBottom: 4}}>
+        {sectionTitle}
+      </AUIThemedText>
       <View style={styles.gridContainer}>
         {items.map(item => (
           <TouchableOpacity
@@ -41,7 +44,11 @@ const FeatureSection: React.FC<Props> = ({
               style={styles.icon}
               resizeMode="contain"
             />
-            <Text style={styles.itemTitle}>{item.title}</Text>
+            <AUIThemedText
+              type="title"
+              style={{fontFamily: 'Poppins-Regular', textAlign: 'center'}}>
+              {item.title}
+            </AUIThemedText>
           </TouchableOpacity>
         ))}
       </View>
@@ -55,11 +62,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flex: 1,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 7,
-  },
+
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -73,9 +76,5 @@ const styles = StyleSheet.create({
     width: 69,
     height: 67,
     marginBottom: 4,
-  },
-  itemTitle: {
-    fontSize: 12,
-    textAlign: 'center',
   },
 });

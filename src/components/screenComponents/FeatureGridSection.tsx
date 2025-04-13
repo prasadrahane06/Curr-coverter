@@ -1,4 +1,5 @@
 import AUIImage from '@components/common/AUIImage';
+import {AUIThemedText} from '@components/common/AUIThemedText';
 import React from 'react';
 import {
   View,
@@ -9,18 +10,20 @@ import {
   ImageStyle,
   TextStyle,
   ViewStyle,
+  TouchableOpacity,
 } from 'react-native';
 
 interface Item {
   icon: ImageSourcePropType;
-  label: string;
+  title: string;
 }
 
 interface FeatureGridSectionProps {
   title?: string;
   items?: Item[];
-  bannerImage?: any; // Replace 'any' with proper type for AUIImage path if available
+  bannerImage?: any;
   bannerStyle?: ImageStyle;
+  onItemPress?: (item: Item) => void;
 }
 
 const FeatureGridSection: React.FC<FeatureGridSectionProps> = ({
@@ -28,56 +31,71 @@ const FeatureGridSection: React.FC<FeatureGridSectionProps> = ({
   items = [],
   bannerImage,
   bannerStyle = {},
+  onItemPress,
 }) => {
-  // Default items if none provided
   const defaultItems: Item[] = [
-    {icon: require('@assets/Icons/Recharge.png'), label: 'dth'},
-    {icon: require('@assets/Icons/Recharge.png'), label: 'dth'},
-    {icon: require('@assets/Icons/Recharge.png'), label: 'dth'},
-    {icon: require('@assets/Icons/Recharge.png'), label: 'dth'},
+    {icon: require('@assets/Images/no_Image.png'), title: 'noImage'},
+    {icon: require('@assets/Images/no_Image.png'), title: 'noImage'},
+    {icon: require('@assets/Images/no_Image.png'), title: 'noImage'},
+    {icon: require('@assets/Images/no_Image.png'), title: 'noImage'},
   ];
 
   const displayItems = items.length > 0 ? items : defaultItems;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-
+      <AUIThemedText type="defaultSemiBold" style={{marginBottom: 4}}>
+        {title}
+      </AUIThemedText>
       <View style={styles.contentContainer}>
-        {/* Left Column */}
         <View style={styles.column}>
           {displayItems.slice(0, 2).map((item, index) => (
             <View key={`left-${index}`}>
-              <Image
-                source={item.icon}
-                style={styles.icon}
-                resizeMode="contain"
-              />
-              <Text style={styles.label}>{item.label}</Text>
+              <TouchableOpacity
+                key={item.title}
+                onPress={() => onItemPress?.(item)}>
+                <Image
+                  source={item.icon}
+                  style={styles.icon}
+                  resizeMode="contain"
+                />
+
+                <AUIThemedText
+                  type="title"
+                  style={{fontFamily: 'Poppins-Regular', textAlign: 'center'}}>
+                  {item.title}
+                </AUIThemedText>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
 
-        {/* Right Column */}
         <View style={styles.column}>
           {displayItems.slice(2, 4).map((item, index) => (
             <View key={`right-${index}`}>
-              <Image
-                source={item.icon}
-                style={styles.icon}
-                resizeMode="contain"
-              />
-              <Text style={styles.label}>{item.label}</Text>
+              <TouchableOpacity
+                key={item.title}
+                onPress={() => onItemPress?.(item)}>
+                <Image
+                  source={item.icon}
+                  style={styles.icon}
+                  resizeMode="contain"
+                />
+                <AUIThemedText
+                  type="title"
+                  style={{fontFamily: 'Poppins-Regular', textAlign: 'center'}}>
+                  {item.title}
+                </AUIThemedText>
+              </TouchableOpacity>
             </View>
           ))}
         </View>
-        {/* Banner */}
         {bannerImage && (
           <View style={styles.bannerContainer}>
             <AUIImage
               path={bannerImage}
               style={[styles.banner, bannerStyle]}
-              resizeMode="center"
+              resizeMode="contain"
             />
           </View>
         )}
@@ -86,7 +104,6 @@ const FeatureGridSection: React.FC<FeatureGridSectionProps> = ({
   );
 };
 
-// Define styles with TypeScript
 const styles = StyleSheet.create({
   container: {
     marginTop: 27,
@@ -100,6 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: 10,
   } as ViewStyle,
   column: {
     flexDirection: 'column',
@@ -109,12 +127,13 @@ const styles = StyleSheet.create({
     height: 67,
     marginBottom: 4,
   } as ImageStyle,
-  label: {
-    fontSize: 12,
-    textAlign: 'center',
-  } as TextStyle,
+  itemContainer: {
+    width: '23%',
+    alignItems: 'center',
+  },
+
   bannerContainer: {
-    width: 120,
+    width: '100%',
     justifyContent: 'center',
     flex: 1,
     alignItems: 'center',

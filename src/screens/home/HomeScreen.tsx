@@ -9,7 +9,7 @@ import sheethandler from '@assets/Images/sheethandler.png';
 import Banner1 from '@assets/Images/Banner-1.png';
 import holyBanner from '@assets/Images/holyJourneyBanner.png';
 import dthCashBanner from '@assets/Images/dthCashbackBanner.png';
-import fakeSickBanner from '@assets/Images/fakeLaveOfferBanner.png';
+import fakeSickBanner from '@assets/Images/fakeLeaveOfferBanner.png';
 import podcastBanner from '@assets/Images/podcastBanner.png';
 import liveDarshanBanner from '@assets/Images/liveDarshanBanner.png';
 import {GLOBAL_TEXT} from '@constants/Properties';
@@ -29,8 +29,8 @@ const HomeScreen = ({navigation, route}: TabsStackScreenProps<'Home'>) => {
   };
 
   return (
-    <AUISafeAreaView style={{flex: 1}}>
-      <AUIThemedView style={initialPageStyles.container}>
+    <AUISafeAreaView>
+      <AUIThemedView style={{flex: 1}}>
         <HeaderCard
           greetingText={GLOBAL_TEXT.welcome.greeting}
           userNameText={GLOBAL_TEXT.welcome.userName}
@@ -82,7 +82,7 @@ const HomeScreen = ({navigation, route}: TabsStackScreenProps<'Home'>) => {
                 />
                 <FeatureSection
                   sectionTitle={GLOBAL_TEXT.categories.yatra.title}
-                  items={rechargeItems}
+                  items={yatraItems}
                   onItemPress={handleFeaturePress}
                   containerStyle={{marginTop: 27}}
                 />
@@ -96,44 +96,46 @@ const HomeScreen = ({navigation, route}: TabsStackScreenProps<'Home'>) => {
                   items={[
                     {
                       icon: require('@assets/Icons/Podcast.png'),
-                      label: GLOBAL_TEXT.categories.sanchar.podcast,
+                      title: GLOBAL_TEXT.categories.sanchar.podcast,
                     },
                     {
                       icon: require('@assets/Icons/News.png'),
-                      label: GLOBAL_TEXT.categories.sanchar.news,
+                      title: GLOBAL_TEXT.categories.sanchar.news,
                     },
                     {
                       icon: require('@assets/Icons/Video.png'),
-                      label: GLOBAL_TEXT.categories.sanchar.video,
+                      title: GLOBAL_TEXT.categories.sanchar.video,
                     },
                     {
                       icon: require('@assets/Icons/Live.png'),
-                      label: GLOBAL_TEXT.categories.sanchar.live,
+                      title: GLOBAL_TEXT.categories.sanchar.live,
                     },
                   ]}
                   bannerImage={podcastBanner}
+                  onItemPress={handleFeaturePress}
                 />
                 <FeatureGridSection
                   title={GLOBAL_TEXT.categories.religious.title}
                   items={[
                     {
                       icon: require('@assets/Icons/daily_darshan.png'),
-                      label: GLOBAL_TEXT.categories.religious.dailyDarshan,
+                      title: GLOBAL_TEXT.categories.religious.dailyDarshan,
                     },
                     {
                       icon: require('@assets/Icons/divyavarhan.png'),
-                      label: GLOBAL_TEXT.categories.religious.divyaVardan,
+                      title: GLOBAL_TEXT.categories.religious.divyaVardan,
                     },
                     {
                       icon: require('@assets/Icons/consultancy.png'),
-                      label: GLOBAL_TEXT.categories.religious.consultancy,
+                      title: GLOBAL_TEXT.categories.religious.consultancy,
                     },
                     {
                       icon: require('@assets/Icons/VSSCT.png'),
-                      label: GLOBAL_TEXT.categories.religious.vssct,
+                      title: GLOBAL_TEXT.categories.religious.vssct,
                     },
                   ]}
                   bannerImage={liveDarshanBanner}
+                  onItemPress={handleFeaturePress}
                 />
               </ScrollView>
             </AUIBottomContainer>
@@ -164,6 +166,7 @@ const styles = StyleSheet.create({
     paddingTop: 11,
     bottom: 0,
     alignItems: 'center',
+    paddingBottom: 30,
   },
   sheetHandler: {
     width: '20%',
@@ -174,10 +177,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 136,
     marginTop: 25,
+    borderRadius: 13,
   },
   discoutBanner: {
     width: '100%',
     height: 63,
     marginTop: 14,
+    borderRadius: 7,
   },
 });
