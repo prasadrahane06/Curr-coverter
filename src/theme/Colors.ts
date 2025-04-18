@@ -3,7 +3,7 @@ export interface AppVariant {
   second: string;
   third: string;
 }
-
+///
 export interface AppTheme {
   background: string;
   gray: string;
@@ -14,7 +14,7 @@ export interface AppTheme {
 }
 
 export interface ColorThemes {
-  light: {background: string};
+  light: {background: string; primary?: string};
   dark: {background: string};
 }
 export interface TextTheme {
@@ -36,7 +36,7 @@ export interface TextTheme {
   };
 }
 const BACKGROUND_THEME: ColorThemes = {
-  light: {background: '#fff'},
+  light: {background: '#fff', primary: '#1269EB'},
   dark: {background: '#0B1710'},
 };
 
@@ -46,8 +46,8 @@ const APP_THEME = {
 };
 const TEXT_THEME: TextTheme = {
   light: {
-    primary: '#0B1710',
-    secondary: '#ccc',
+    primary: '#fff',
+    secondary: '#00000',
     danger: '#dc3545',
     warning: '#ffc107',
     info: '#17a2b8',

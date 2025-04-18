@@ -30,10 +30,10 @@ export function AUIThemedText({
 const styles = StyleSheet.create({
   default: {
     fontSize: 16,
-    color: '#FFFFFF',
+    color: '#00000',
   },
   defaultSemiBold: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: '700',
   },
   title: {
@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 14,
+    color: 'white',
+    textAlign: 'center',
   },
   link: {
     lineHeight: 30,

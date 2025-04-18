@@ -1,188 +1,158 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {TabsStackScreenProps} from '../../navigation/AppNavigator';
-import HeaderCard from '@components/screenComponents/HeaderCard';
-import profile from '@assets/Images/profile.png';
-import wallet from '@assets/Icons/wallet.png';
-import Bell from '@assets/Icons/Bell_light.png';
-import ShoppingCart from '@assets/Icons/Shopping_cart.png';
-import sheethandler from '@assets/Images/sheethandler.png';
-import Banner1 from '@assets/Images/Banner-1.png';
-import holyBanner from '@assets/Images/holyJourneyBanner.png';
-import dthCashBanner from '@assets/Images/dthCashbackBanner.png';
-import fakeSickBanner from '@assets/Images/fakeLeaveOfferBanner.png';
-import podcastBanner from '@assets/Images/podcastBanner.png';
-import liveDarshanBanner from '@assets/Images/liveDarshanBanner.png';
-import {GLOBAL_TEXT} from '@constants/Properties';
+import React, {useState} from 'react';
+import {Alert, KeyboardAvoidingView, Platform, View} from 'react-native';
+
 import {AUIThemedView} from '@components/common/AUIThemedView';
-import {initialPageStyles} from '../../theme/Styles';
 import {AUISafeAreaView} from '@components/common/AUISafeAreaView';
-import AUIImage from '@components/common/AUIImage';
-import BackgroundImage from '@assets/Images/bgBanner2.png';
-import {APP_THEME} from '../../theme/Colors';
-import {AUIBottomContainer} from '@components/common/AUIBottomContainer';
-import FeatureSection from '@components/screenComponents/FeatureSection';
-import FeatureGridSection from '@components/screenComponents/FeatureGridSection';
-import {travelItems, rechargeItems, yatraItems} from '@data/homeSectionsData';
-const HomeScreen = ({navigation, route}: TabsStackScreenProps<'Home'>) => {
-  const handleFeaturePress = (item: any) => {
-    console.log('Pressed item:', item.title);
+import {AUIThemedText} from '@components/common/AUIThemedText';
+import AUIDropDown from '@components/common/AUIDropDown';
+import AUIInputField from '@components/common/AUIInputField';
+import AUIButton from '@components/common/AUIButton';
+import {countriesData} from '../../data/countriesData';
+import {getExchangeRate} from '../../services/CurrencyConverter';
+import {ApiErrorToast, ApiSuccessToast} from '@components/common/AUIToast';
+
+const HomeScreen = () => {
+  const [sourceCurrency, setSourceCurrency] = useState<any>(null);
+  const [targetCurrency, setTargetCurrency] = useState<any>(null);
+  const [amount, setAmount] = useState<string>('');
+  const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
+  const [error, setError] = useState<string>('');
+  const [isConverting, setIsConverting] = useState(false);
+
+  const dropdownList = countriesData.map(item => ({
+    ...item,
+    label: `${item.code} - ${item.currency.name} (${item.currency.symbol})`,
+    value: item.code,
+    iconUri: item.flag,
+  }));
+
+  const handleConvert = async () => {
+    if (!amount || isNaN(Number(amount))) {
+      setError('Please enter a valid number for amount.');
+      return;
+    }
+    if (!sourceCurrency || !targetCurrency) {
+      setError('Please select both source and target currencies.');
+      return;
+    }
+
+    setError('');
+    setIsConverting(true);
+    try {
+      const exchange = await getExchangeRate(
+        sourceCurrency.currency,
+        targetCurrency.currency,
+      );
+      const result = parseFloat(amount) * exchange.rate;
+      setConvertedAmount(result);
+      ApiSuccessToast('Successfully Converted');
+    } catch (err: any) {
+      ApiErrorToast('Conversion Error');
+    } finally {
+      setIsConverting(false);
+    }
   };
 
   return (
     <AUISafeAreaView>
-      <AUIThemedView style={{flex: 1}}>
-        <HeaderCard
-          greetingText={GLOBAL_TEXT.welcome.greeting}
-          userNameText={GLOBAL_TEXT.welcome.userName}
-          profileImage={profile}
-          walletImage={wallet}
-          notificationImage={Bell}
-          shoppingCartImage={ShoppingCart}
-        />
-        <ScrollView
+      <AUIThemedView style={{flex: 1, padding: 16}}>
+        <KeyboardAvoidingView
           style={{flex: 1}}
-          contentContainerStyle={{flexGrow: 1}}
-          showsVerticalScrollIndicator={false}>
-          <View style={styles.relativeContainer}>
-            <AUIImage
-              path={BackgroundImage}
-              style={styles.backgroundImage}
-              resizeMode="contain"
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <AUIThemedText type="defaultSemiBold" style={{textAlign: 'center'}}>
+            💱 Currency Converter
+          </AUIThemedText>
+          <AUIThemedText
+            type="subtitle"
+            style={{marginBottom: 12, textAlign: 'center'}}>
+            Convert between currencies in real-time
+          </AUIThemedText>
+          <View
+            style={{borderBottomColor: 'white', borderBottomWidth: 1}}></View>
+          <AUIThemedView
+            style={{
+              flexDirection: 'column',
+              flex: 1,
+              gap: 20,
+              marginTop: 20,
+            }}>
+            <AUIInputField
+              label="Enter Amount to Convert"
+              placeholder="Enter amount"
+              value={amount}
+              onChangeText={(val: string) => {
+                const numericOnly = val.replace(/[^0-9.]/g, '');
+                setAmount(numericOnly);
+              }}
+              keyboardType="numeric"
+              error={error.includes('amount') ? error : ''}
             />
-
-            <AUIBottomContainer style={styles.bottomContainer}>
-              <AUIImage path={sheethandler} style={styles.sheetHandler} />
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <AUIImage
-                  path={Banner1}
-                  style={styles.banner}
-                  resizeMode="contain"
-                />
-                <FeatureSection
-                  sectionTitle={GLOBAL_TEXT.categories.travel.title}
-                  items={travelItems}
-                  onItemPress={handleFeaturePress}
-                  containerStyle={{marginTop: 27}}
-                />
-                <AUIImage
-                  path={holyBanner}
-                  style={styles.discoutBanner}
-                  resizeMode="contain"
-                />
-                <FeatureSection
-                  sectionTitle={GLOBAL_TEXT.categories.recharge.title}
-                  items={rechargeItems}
-                  onItemPress={handleFeaturePress}
-                  containerStyle={{marginTop: 27}}
-                />
-                <AUIImage
-                  path={dthCashBanner}
-                  style={styles.discoutBanner}
-                  resizeMode="contain"
-                />
-                <FeatureSection
-                  sectionTitle={GLOBAL_TEXT.categories.yatra.title}
-                  items={yatraItems}
-                  onItemPress={handleFeaturePress}
-                  containerStyle={{marginTop: 27}}
-                />
-                <AUIImage
-                  path={fakeSickBanner}
-                  style={styles.discoutBanner}
-                  resizeMode="contain"
-                />
-                <FeatureGridSection
-                  title={GLOBAL_TEXT.categories.sanchar.title}
-                  items={[
-                    {
-                      icon: require('@assets/Icons/Podcast.png'),
-                      title: GLOBAL_TEXT.categories.sanchar.podcast,
-                    },
-                    {
-                      icon: require('@assets/Icons/News.png'),
-                      title: GLOBAL_TEXT.categories.sanchar.news,
-                    },
-                    {
-                      icon: require('@assets/Icons/Video.png'),
-                      title: GLOBAL_TEXT.categories.sanchar.video,
-                    },
-                    {
-                      icon: require('@assets/Icons/Live.png'),
-                      title: GLOBAL_TEXT.categories.sanchar.live,
-                    },
-                  ]}
-                  bannerImage={podcastBanner}
-                  onItemPress={handleFeaturePress}
-                />
-                <FeatureGridSection
-                  title={GLOBAL_TEXT.categories.religious.title}
-                  items={[
-                    {
-                      icon: require('@assets/Icons/daily_darshan.png'),
-                      title: GLOBAL_TEXT.categories.religious.dailyDarshan,
-                    },
-                    {
-                      icon: require('@assets/Icons/divyavarhan.png'),
-                      title: GLOBAL_TEXT.categories.religious.divyaVardan,
-                    },
-                    {
-                      icon: require('@assets/Icons/consultancy.png'),
-                      title: GLOBAL_TEXT.categories.religious.consultancy,
-                    },
-                    {
-                      icon: require('@assets/Icons/VSSCT.png'),
-                      title: GLOBAL_TEXT.categories.religious.vssct,
-                    },
-                  ]}
-                  bannerImage={liveDarshanBanner}
-                  onItemPress={handleFeaturePress}
-                />
-              </ScrollView>
-            </AUIBottomContainer>
-          </View>
-        </ScrollView>
+            <AUIDropDown
+              list={dropdownList}
+              value={sourceCurrency?.value}
+              setValue={(item: any) => setSourceCurrency(item)}
+              labelField="label"
+              valueField="value"
+              listWithIcon
+              label="From Currency"
+              extrastyle={{
+                paddingVertical: 11,
+                borderWidth: 1,
+                borderRadius: 10,
+                borderColor: '#CDD2D9',
+              }}
+            />
+            <AUIDropDown
+              list={dropdownList}
+              value={targetCurrency?.value}
+              setValue={(item: any) => setTargetCurrency(item)}
+              labelField="label"
+              valueField="value"
+              listWithIcon
+              label="To Currency"
+              extrastyle={{
+                paddingVertical: 11,
+                borderWidth: 1,
+                borderRadius: 10,
+                borderColor: '#CDD2D9',
+              }}
+            />
+            {error.includes('currencies') && (
+              <AUIThemedText style={{color: 'red', marginTop: 8}}>
+                {error}
+              </AUIThemedText>
+            )}
+            //
+            {convertedAmount !== null && (
+              <AUIThemedView
+                style={{
+                  gap: 10,
+                  backgroundColor: 'white',
+                  padding: 20,
+                  borderRadius: 15,
+                }}>
+                <AUIThemedText
+                  type="defaultSemiBold"
+                  style={{color: 'black', opacity: 0.5}}>
+                  Converted Amount:
+                </AUIThemedText>
+                <AUIThemedText type="defaultSemiBold" style={{color: 'black'}}>
+                  {targetCurrency?.currency.symbol} {convertedAmount.toFixed(2)}
+                </AUIThemedText>
+              </AUIThemedView>
+            )}
+          </AUIThemedView>
+          <AUIButton
+            title={isConverting ? 'Converting...' : 'Convert Currency'}
+            background="#FFED89"
+            onPress={handleConvert}
+            loadingDuration={isConverting}
+            disabled={isConverting}
+          />
+        </KeyboardAvoidingView>
       </AUIThemedView>
     </AUISafeAreaView>
   );
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  relativeContainer: {
-    position: 'relative',
-    flex: 1,
-  },
-  backgroundImage: {
-    width: '100%',
-    height: 200,
-    backgroundColor: APP_THEME.headerBackground,
-    marginTop: -20,
-  },
-  bottomContainer: {
-    flex: 1,
-    width: '100%',
-    marginTop: -40,
-    paddingTop: 11,
-    bottom: 0,
-    alignItems: 'center',
-    paddingBottom: 30,
-  },
-  sheetHandler: {
-    width: '20%',
-    height: 4,
-    borderRadius: 20,
-  },
-  banner: {
-    width: '100%',
-    height: 136,
-    marginTop: 25,
-    borderRadius: 13,
-  },
-  discoutBanner: {
-    width: '100%',
-    height: 63,
-    marginTop: 14,
-    borderRadius: 7,
-  },
-});

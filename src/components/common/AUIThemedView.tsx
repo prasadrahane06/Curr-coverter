@@ -8,7 +8,7 @@ export function AUIThemedView({style, ...otherProps}: ThemedViewProps) {
     <View
       style={[
         {
-          backgroundColor: BACKGROUND_THEME.light.background,
+          backgroundColor: BACKGROUND_THEME.light.primary,
         },
         style,
       ]}
