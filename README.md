@@ -1,4 +1,53 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Currency_Converter
+==============
+App discription: The app is created in React Native Cli it is a single Screen app which has an input field , dropdown and button.
+===============
+working of Application:
+step 1 :User Enter the Amount he/she want to convert only numbers are allowed .
+step 2: User Select the country/currency from the dropdown from which he want to convert the amount.
+step 3: User Select the country/currency from the dropdown to which he want to convert the amount.
+Extra : Since the country lists are large the user can also search in the search bar to select the contry.
+================
+Challenges Faced:
+Api Implementation:
+To convert and get live currency rates i used freecurrencyapi and get there api key and used in my app.
+It was difficult to know what data the api wants exactly for that i followed there documentation and also took some online help.
+Also in designing the ui i it was a easy work for me as i have already has hands on practise in designing.
+Thank you,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Getting Started
 
